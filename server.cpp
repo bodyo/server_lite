@@ -17,8 +17,8 @@ void handler(int client1, int client2, int &size_of_mess, char *mess, mutex &det
 {
   do
   {
-    size_of_mess = recv(client1, mess, 2000, 0);
     detach.lock();
+    size_of_mess = recv(client1, mess, 2000, 0);
     write(client2, mess, strlen(mess));
     memset(mess, 0, sizeof(mess));
     detach.unlock();
@@ -72,6 +72,8 @@ int main()
   thread handling_conections2(handler, client2_sock, client1_sock, ref(size_of_mess2), client_message, ref(cont));
   handling_conections1.join();
   handling_conections2.join();
+
+  // One main thread !!!!!!!!!!!!!!!!!!!!
   // do
   // {
   //   size_of_mess1 = recv(client1_sock, client_message, 2000, 0);
